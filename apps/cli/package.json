@@ -1,0 +1,8 @@
+{
+  "name": "@meridian/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "meridian": "./meridian.js"
+  }
+}

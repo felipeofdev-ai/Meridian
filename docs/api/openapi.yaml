@@ -1,0 +1,59 @@
+openapi: 3.1.0
+info:
+  title: Meridian API
+  version: 1.3.0
+  description: Versioned API contract for webhook ingestion, audit export verification, integrity verification, metrics, and policy evaluation.
+servers:
+  - url: https://api.meridian.local
+paths:
+  /webhooks/github:
+    post:
+      summary: Receive GitHub webhook
+      responses:
+        '202': { description: Accepted }
+        '401': { description: Unauthorized }
+  /webhooks/gitlab:
+    post:
+      summary: Receive GitLab webhook
+      responses:
+        '202': { description: Accepted }
+        '401': { description: Unauthorized }
+  /audit/integrity:
+    get:
+      summary: Verify audit hash chain integrity
+      parameters:
+        - in: query
+          name: tenant_id
+          schema: { type: string }
+          required: true
+      responses:
+        '200': { description: Integrity verification result }
+  /audit/export:
+    get:
+      summary: Export tamper-proof audit bundle
+      parameters:
+        - in: query
+          name: tenant_id
+          schema: { type: string }
+          required: true
+        - in: query
+          name: from
+          schema: { type: string, format: date-time }
+          required: false
+        - in: query
+          name: to
+          schema: { type: string, format: date-time }
+          required: false
+      responses:
+        '200': { description: Signed export bundle }
+  /metrics:
+    get:
+      summary: Collector Prometheus metrics
+      responses:
+        '200': { description: Metrics payload }
+  /evaluate:
+    post:
+      summary: Evaluate compliance policy input (Policy Engine)
+      responses:
+        '200': { description: Policy decision result }
+components: {}
