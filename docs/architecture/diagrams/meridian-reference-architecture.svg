@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
+  <rect width="1400" height="860" fill="#0b1220"/>
+  <text x="60" y="60" fill="#f8fafc" font-size="34" font-family="Arial" font-weight="700">Meridian Reference Architecture</text>
+  <text x="60" y="92" fill="#94a3b8" font-size="16" font-family="Arial">Enterprise governance and compliance control plane</text>
+
+  <rect x="60" y="140" width="240" height="90" rx="8" fill="#1e293b" stroke="#475569"/>
+  <text x="80" y="178" fill="#e2e8f0" font-size="16" font-family="Arial">GitHub / GitLab / BB</text>
+  <text x="80" y="202" fill="#94a3b8" font-size="13" font-family="Arial">Webhooks + APIs</text>
+
+  <rect x="360" y="120" width="270" height="130" rx="8" fill="#111827" stroke="#64748b"/>
+  <text x="380" y="160" fill="#f8fafc" font-size="18" font-family="Arial">Event Collector</text>
+  <text x="380" y="184" fill="#94a3b8" font-size="13" font-family="Arial">HMAC validation · tenant auth</text>
+  <text x="380" y="206" fill="#94a3b8" font-size="13" font-family="Arial">hash chain seed + append write</text>
+
+  <rect x="700" y="120" width="270" height="130" rx="8" fill="#111827" stroke="#64748b"/>
+  <text x="720" y="160" fill="#f8fafc" font-size="18" font-family="Arial">Policy Engine (OPA)</text>
+  <text x="720" y="184" fill="#94a3b8" font-size="13" font-family="Arial">Rego evaluation</text>
+  <text x="720" y="206" fill="#94a3b8" font-size="13" font-family="Arial">violations + decision logs</text>
+
+  <rect x="1040" y="120" width="290" height="130" rx="8" fill="#111827" stroke="#64748b"/>
+  <text x="1060" y="160" fill="#f8fafc" font-size="18" font-family="Arial">Compliance Intelligence</text>
+  <text x="1060" y="184" fill="#94a3b8" font-size="13" font-family="Arial">scores · anomaly signals</text>
+  <text x="1060" y="206" fill="#94a3b8" font-size="13" font-family="Arial">executive risk outputs</text>
+
+  <rect x="360" y="340" width="330" height="170" rx="8" fill="#111827" stroke="#64748b"/>
+  <text x="380" y="378" fill="#f8fafc" font-size="18" font-family="Arial">Immutable Audit Store</text>
+  <text x="380" y="402" fill="#94a3b8" font-size="13" font-family="Arial">PostgreSQL append-only + RLS</text>
+  <text x="380" y="424" fill="#94a3b8" font-size="13" font-family="Arial">tenant isolation + retention</text>
+  <text x="380" y="446" fill="#94a3b8" font-size="13" font-family="Arial">integrity verification endpoint</text>
+
+  <rect x="760" y="340" width="280" height="170" rx="8" fill="#111827" stroke="#64748b"/>
+  <text x="780" y="378" fill="#f8fafc" font-size="18" font-family="Arial">API Gateway</text>
+  <text x="780" y="402" fill="#94a3b8" font-size="13" font-family="Arial">OIDC/SAML authN</text>
+  <text x="780" y="424" fill="#94a3b8" font-size="13" font-family="Arial">RBAC/tenant authZ</text>
+  <text x="780" y="446" fill="#94a3b8" font-size="13" font-family="Arial">audit export endpoints</text>
+
+  <rect x="1080" y="340" width="250" height="170" rx="8" fill="#111827" stroke="#64748b"/>
+  <text x="1100" y="378" fill="#f8fafc" font-size="18" font-family="Arial">Executive Dashboard</text>
+  <text x="1100" y="402" fill="#94a3b8" font-size="13" font-family="Arial">Risk heatmaps</text>
+  <text x="1100" y="424" fill="#94a3b8" font-size="13" font-family="Arial">Trend & SLA views</text>
+
+  <rect x="60" y="600" width="1270" height="180" rx="10" fill="#0f172a" stroke="#334155"/>
+  <text x="90" y="638" fill="#f8fafc" font-size="20" font-family="Arial">Security & Trust Plane</text>
+  <text x="90" y="668" fill="#94a3b8" font-size="13" font-family="Arial">Cosign signed releases · SBOM automation · Provenance attestations · mTLS service auth · Observability + correlation IDs</text>
+  <text x="90" y="692" fill="#94a3b8" font-size="13" font-family="Arial">DR (RPO/RTO) · SOC2 readiness · Procurement package · Responsible disclosure</text>
+
+  <line x1="300" y1="185" x2="360" y2="185" stroke="#cbd5e1" stroke-width="2"/>
+  <line x1="630" y1="185" x2="700" y2="185" stroke="#cbd5e1" stroke-width="2"/>
+  <line x1="970" y1="185" x2="1040" y2="185" stroke="#cbd5e1" stroke-width="2"/>
+  <line x1="495" y1="250" x2="495" y2="340" stroke="#cbd5e1" stroke-width="2"/>
+  <line x1="835" y1="250" x2="835" y2="340" stroke="#cbd5e1" stroke-width="2"/>
+  <line x1="1040" y1="425" x2="1080" y2="425" stroke="#cbd5e1" stroke-width="2"/>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "name": "meridian",
+  "private": true,
+  "version": "0.2.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run -w apps/collector build && npm run -w apps/policy-engine build",
+    "dev": "npm run -w apps/collector dev",
+    "test": "npm run -w apps/collector test",
+    "lint": "npm run -w apps/collector lint && npm run -w apps/policy-engine lint"
+  }
+}
