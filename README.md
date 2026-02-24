@@ -1,55 +1,99 @@
 # Meridian
 
-**The Fixed Point of Truth for Enterprise Engineering**
+Immutable audit trail and policy-as-code engine for Git-based engineering workflows.
 
-Meridian é uma plataforma de governança e compliance para Git enterprise com trilha de auditoria imutável, policy-as-code e inteligência de conformidade.
+Meridian collects events from GitHub and GitLab webhooks, stores them in an append-only PostgreSQL ledger with hash chaining, evaluates policy violations in real time, and lets you export cryptographically signed audit bundles for offline verification.
 
-## Estado atual (entregável executável)
+---
 
-- Collector funcional em TypeScript/Fastify (`apps/collector`)
-- Policy Engine inicial (`apps/policy-engine`) com avaliação de violações críticas
-- Persistência de eventos em PostgreSQL append-only com hash chain e RLS por tenant
-- Endpoints ativos:
-  - `POST /webhooks/github`
-  - `POST /webhooks/gitlab`
-  - `GET /audit/integrity?tenant_id=...`
-  - `GET /audit/export?tenant_id=...&from=...&to=...` (includes `key_id`, signature metadata)
-  - `GET /metrics`
-- Verificação offline de export via CLI:
-  - `node apps/cli/meridian.js verify --bundle audit-export.json --key <export_signing_key>`
-  - Ed25519 mode: `node apps/cli/meridian.js verify --bundle audit-export.json --public-key ./export-public.pem`
+## What it does
+
+- **Webhook collector** — receives GitHub/GitLab events, persists them append-only with SHA-256 hash chain per tenant
+- **Policy engine** — evaluates incoming events against configurable rules, flags critical violations
+- **Signed export** — generates audit bundles signed with Ed25519; verifiable offline via CLI
+- **Multi-tenant isolation** — Row-Level Security in PostgreSQL; each tenant sees only its own data
+
+---
+
+## Stack
+
+TypeScript · Fastify · PostgreSQL (RLS + append-only) · Docker · Ed25519 signing · SBOM/Cosign in release pipeline
+
+---
 
 ## Quickstart
 
 ```bash
 make setup
 make up
+# Collector: http://localhost:8080
+# Policy engine: http://localhost:8081
 ```
 
-Collector em `http://localhost:8080` e Policy Engine em `http://localhost:8081`.
+**Active endpoints:**
+```
+POST /webhooks/github
+POST /webhooks/gitlab
+GET  /audit/integrity?tenant_id=...
+GET  /audit/export?tenant_id=...&from=...&to=...
+GET  /metrics
+```
 
-## Segurança e Trust Signals
+**Verify an exported bundle offline:**
+```bash
+node apps/cli/meridian.js verify --bundle audit-export.json --key <export_signing_key>
+# Ed25519 mode:
+node apps/cli/meridian.js verify --bundle audit-export.json --public-key ./export-public.pem
+```
 
-- Row-Level Security por tenant no banco
-- Chaves/segredos por tenant via configuração (`TENANT_GITHUB_SECRETS`, `TENANT_GITLAB_TOKENS`, `TENANT_API_KEYS`)
-- Release security pipeline com SBOM, Trivy, Cosign e provenance attestation
-- Dependabot semanal para npm e GitHub Actions
-- Responsible disclosure policy + `.well-known/security.txt`
+**Run end-to-end local validation:**
+```bash
+make validate-local
+# generates reports/local-validation-report.md
+```
 
-## Estrutura-chave
+**Minimal stack (Postgres + Collector only):**
+```bash
+make up-minimal
+```
 
-- Código: `apps/collector/`, `apps/policy-engine/`, `apps/cli/`
-- SQL append-only + RLS: `apps/collector/sql/001_init.sql`
-- CI/CD: `.github/workflows/ci.yml`, `.github/workflows/release-security.yml`
-- OpenAPI: `docs/api/openapi.yaml`
-- Governança: `docs/governance/`
-- Segurança: `docs/security/`
-- Compliance: `docs/compliance/`
-- Support/LTS: `docs/support/`
-- Procurement: `docs/procurement/`
-- Pilot package: `docs/pilot/`
-- Integrações enterprise: `docs/integrations/`
-- Arquitetura de referência: `docs/architecture/reference-deployment-aws.md`, `docs/architecture/reference-deployment-azure.md`
-- Performance e resiliência: `tests/load/k6-script.js`, `tests/resilience/`, `reports/`
-- Validação local ponta a ponta: `make validate-local` (gera `reports/local-validation-report.md`)
-- Stack mínima (Postgres + Collector): `make up-minimal`
+---
+
+## Security
+
+- Row-Level Security per tenant in PostgreSQL
+- Per-tenant secrets via env config (`TENANT_GITHUB_SECRETS`, `TENANT_GITLAB_TOKENS`, `TENANT_API_KEYS`)
+- Release pipeline: SBOM generation, Trivy scan, Cosign signing, provenance attestation
+- Weekly Dependabot for npm and GitHub Actions
+- Responsible disclosure policy at `.well-known/security.txt`
+
+---
+
+## Project structure
+
+```
+apps/
+  collector/      # Fastify webhook receiver, PostgreSQL append-only writer
+  policy-engine/  # Rule evaluation, violation detection
+  cli/            # Offline bundle verification
+docs/
+  governance/
+  security/
+  compliance/
+  architecture/   # AWS and Azure reference deployments
+tests/
+  load/           # k6 load scripts
+  resilience/
+.meridian/policies/
+```
+
+---
+
+## Status
+
+Active development. Core collector, policy engine, and signed export are functional.
+See [SECURITY.md](SECURITY.md) for responsible disclosure.
+
+---
+
+MIT License · [@felipeofdev-ai](https://github.com/felipeofdev-ai)
