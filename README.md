@@ -1,36 +1,35 @@
+<div align="center">
+
 # Meridian
 
-Immutable audit trail and policy-as-code engine for Git-based engineering workflows.
+### Append-only engineering governance — the fixed point of truth
 
-Meridian collects events from GitHub and GitLab webhooks, stores them in an append-only PostgreSQL ledger with hash chaining, evaluates policy violations in real time, and lets you export cryptographically signed audit bundles for offline verification.
+[![TypeScript](https://img.shields.io/badge/TypeScript-Fastify-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://github.com/felipeofdev-ai/Meridian)
+[![Orbit](https://img.shields.io/badge/Portfolio-Orbit-5EC8C0?style=for-the-badge)](https://felipeofdev-ai.github.io/)
 
----
+Immutable audit trail + policy-as-code for Git-based engineering workflows.  
+Webhook events → hash-chained ledger → real-time policy → Ed25519 signed export.
+
+</div>
 
 ## What it does
 
-- **Webhook collector** — receives GitHub/GitLab events, persists them append-only with SHA-256 hash chain per tenant
-- **Policy engine** — evaluates incoming events against configurable rules, flags critical violations
-- **Signed export** — generates audit bundles signed with Ed25519; verifiable offline via CLI
-- **Multi-tenant isolation** — Row-Level Security in PostgreSQL; each tenant sees only its own data
-
----
+- **Webhook collector** — GitHub/GitLab events, append-only SHA-256 chain per tenant  
+- **Policy engine** — configurable rules, critical violation flags  
+- **Signed export** — audit bundles with Ed25519; offline CLI verify  
+- **Multi-tenant isolation** — PostgreSQL RLS  
 
 ## Stack
 
-TypeScript · Fastify · PostgreSQL (RLS + append-only) · Docker · Ed25519 signing · SBOM/Cosign in release pipeline
-
----
+TypeScript · Fastify · PostgreSQL (RLS + append-only) · Docker · Ed25519 · SBOM/Cosign release path
 
 ## Quickstart
 
 ```bash
-make setup
-make up
-# Collector: http://localhost:8080
-# Policy engine: http://localhost:8081
+make setup && make up
+# Collector :8080 · Policy :8081
 ```
 
-**Active endpoints:**
 ```
 POST /webhooks/github
 POST /webhooks/gitlab
@@ -39,61 +38,12 @@ GET  /audit/export?tenant_id=...&from=...&to=...
 GET  /metrics
 ```
 
-**Verify an exported bundle offline:**
 ```bash
 node apps/cli/meridian.js verify --bundle audit-export.json --key <export_signing_key>
-# Ed25519 mode:
-node apps/cli/meridian.js verify --bundle audit-export.json --public-key ./export-public.pem
 ```
 
-**Run end-to-end local validation:**
-```bash
-make validate-local
-# generates reports/local-validation-report.md
-```
+## Why this matters to hiring managers
 
-**Minimal stack (Postgres + Collector only):**
-```bash
-make up-minimal
-```
+Governance and auditability are table stakes for regulated / enterprise engineering. Meridian shows **tamper-evident design**, not slides.
 
----
-
-## Security
-
-- Row-Level Security per tenant in PostgreSQL
-- Per-tenant secrets via env config (`TENANT_GITHUB_SECRETS`, `TENANT_GITLAB_TOKENS`, `TENANT_API_KEYS`)
-- Release pipeline: SBOM generation, Trivy scan, Cosign signing, provenance attestation
-- Weekly Dependabot for npm and GitHub Actions
-- Responsible disclosure policy at `.well-known/security.txt`
-
----
-
-## Project structure
-
-```
-apps/
-  collector/      # Fastify webhook receiver, PostgreSQL append-only writer
-  policy-engine/  # Rule evaluation, violation detection
-  cli/            # Offline bundle verification
-docs/
-  governance/
-  security/
-  compliance/
-  architecture/   # AWS and Azure reference deployments
-tests/
-  load/           # k6 load scripts
-  resilience/
-.meridian/policies/
-```
-
----
-
-## Status
-
-Active development. Core collector, policy engine, and signed export are functional.
-See [SECURITY.md](SECURITY.md) for responsible disclosure.
-
----
-
-MIT License · [@felipeofdev-ai](https://github.com/felipeofdev-ai)
+Author: [Felipe Fernandes](https://github.com/felipeofdev-ai) · [Orbit portfolio](https://felipeofdev-ai.github.io/)
