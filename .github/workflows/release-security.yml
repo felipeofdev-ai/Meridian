@@ -49,7 +49,7 @@ jobs:
       - name: Sign image with Cosign keyless
         run: cosign sign --yes ghcr.io/${{ github.repository }}/collector:${{ github.ref_name }}
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v3
         with:
           subject-name: ghcr.io/${{ github.repository }}/collector
           subject-digest: sha256:${{ github.sha }}
