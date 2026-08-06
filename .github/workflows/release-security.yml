@@ -31,7 +31,7 @@ jobs:
       - name: Build container
         run: docker build -f apps/collector/Dockerfile -t ghcr.io/${{ github.repository }}/collector:${{ github.ref_name }} .
       - name: Trivy scan image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           image-ref: ghcr.io/${{ github.repository }}/collector:${{ github.ref_name }}
           severity: CRITICAL,HIGH
